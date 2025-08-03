@@ -193,7 +193,7 @@ if(submit_button_clicked):
                 | CTC Amount | {} |
                 | :red[*]Variable Pay (14% of Fixed Salary) | {} |
                 | Basic Salary (40% of Fixed Salary) | {} |
-                | Employer NPS Contribution | {} |
+                | Employer NPS Contribution (14% of Basic Salary) | {} |
                 | Employer PF Contribution (12% of Basic Salary) | {} |
                 | Employee PF Contribution (12% of Basic Salary) | {} |
                 | Gratuity Contribution (4.8% of Basic Salary) | {} |
@@ -209,7 +209,7 @@ if(submit_button_clicked):
                     indian_number_format(professional_tax)
                 )
             )
-            st.markdown(":red[*]_Not considered in taxable income._")
+            st.markdown(":red[*]_Not considered as taxable income._")
 
         with st.expander("In-Hand Salary", expanded=True):
             st.markdown(
