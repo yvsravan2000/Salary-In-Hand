@@ -147,8 +147,8 @@ with st.form(key="inhand_salary_input_form", clear_on_submit=False, enter_to_sub
 
 if(submit_button_clicked):
     with st.spinner(text="Calculating...", show_time=True):
-        # Calculate the variable pay (assuming 14% of fixed gross salary)
-        variable_pay = inp_fixed_salary * 0.14
+        # Calculate the variable pay (assuming 8% of fixed gross salary)
+        variable_pay = inp_fixed_salary * 0.08
 
         # Calculate the ctc (Cost to Company)
         ctc_amount = inp_fixed_salary + variable_pay
@@ -191,7 +191,7 @@ if(submit_button_clicked):
                 | Component | Amount (₹) |
                 |-----------|------------|
                 | CTC Amount | {} |
-                | :red[*]Variable Pay (14% of Fixed Salary) | {} |
+                | :red[*]Variable Pay (8% of Fixed Salary) | {} |
                 | Basic Salary (40% of Fixed Salary) | {} |
                 | Employer NPS Contribution (14% of Basic Salary) | {} |
                 | Employer PF Contribution (12% of Basic Salary) | {} |
