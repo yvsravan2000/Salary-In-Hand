@@ -104,11 +104,11 @@ st.divider()
 
 with st.form(key="inhand_salary_input_form", clear_on_submit=False, enter_to_submit=True, border=True, width="stretch"):
     # Input cols
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     # Input for salary
     inp_fixed_salary = float(col1.number_input(
-        label="Fixed Gross Salary (in INR)",
+        label="Fixed Gross Salary Including Allowances (in INR)",
         min_value=0.0,
         value=1800000.0,
         step=1000.0,
@@ -117,8 +117,21 @@ with st.form(key="inhand_salary_input_form", clear_on_submit=False, enter_to_sub
         help="Enter your gross salary to calculate the tax amount."
     ))
 
+    # Input for variable pay (disabled, assumed 8% of fixed gross salary)
+    inp_variable_pay = float(col2.number_input(
+        label="Variable Pay (% of fixed gross salary)",
+        min_value=0.0,
+        max_value=14.0,
+        value=8.0,
+        step=1.0,
+        format="%.2f",
+        placeholder="8.00",
+        help="Variable pay is assumed to be 8% of the fixed gross salary.",
+        disabled=False
+    ))
+
     # Input for Employer NPS contribution
-    inp_nps = float(col2.number_input(
+    inp_nps = float(col3.number_input(
         label="Employer NPS Contribution (% of basic salary)",
         min_value=0.0,
         max_value=14.0,
@@ -147,8 +160,8 @@ with st.form(key="inhand_salary_input_form", clear_on_submit=False, enter_to_sub
 
 if(submit_button_clicked):
     with st.spinner(text="Calculating...", show_time=True):
-        # Calculate the variable pay (assuming 8% of fixed gross salary)
-        variable_pay = inp_fixed_salary * 0.08
+        # Calculate the variable pay based on user input percentage
+        variable_pay = inp_fixed_salary * (inp_variable_pay / 100)
 
         # Calculate the ctc (Cost to Company)
         ctc_amount = inp_fixed_salary + variable_pay
@@ -191,17 +204,19 @@ if(submit_button_clicked):
                 | Component | Amount (₹) |
                 |-----------|------------|
                 | CTC Amount | {} |
-                | :red[*]Variable Pay (8% of Fixed Salary) | {} |
+                | :red[*]Variable Pay ({:.1f}% of Fixed Salary) | {} |
                 | Basic Salary (40% of Fixed Salary) | {} |
-                | Employer NPS Contribution (14% of Basic Salary) | {} |
+                | Employer NPS Contribution ({:.1f}% of Basic Salary) | {} |
                 | Employer PF Contribution (12% of Basic Salary) | {} |
                 | Employee PF Contribution (12% of Basic Salary) | {} |
                 | Gratuity Contribution (4.8% of Basic Salary) | {} |
                 | Professional Tax (Flat Rate) | {} |
                 """.format(
                     indian_number_format(ctc_amount),
+                    inp_variable_pay,
                     indian_number_format(variable_pay),
                     indian_number_format(basic_salary),
+                    inp_nps,
                     indian_number_format(employer_nps_contribution),
                     indian_number_format(employer_pf_contribution),
                     indian_number_format(employee_pf_contribution),
